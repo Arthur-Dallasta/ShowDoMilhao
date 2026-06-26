@@ -6,7 +6,12 @@ export default function GameOver() {
   const { state } = useLocation()
   const navigate = useNavigate()
 
-  const { playerName = 'Jogador', prize = 0, won = false, level = 0 } = state ?? {}
+  if (!state) {
+    navigate('/')
+    return null
+  }
+
+  const { playerName = 'Jogador', finalPrize: prize = 0, won = false, levelsReached: level = 0 } = state
 
   return (
     <div className={styles.page}>
