@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.db
+node_modules/
+dist/
+.env
+highscores.db
+test_highscores.db
