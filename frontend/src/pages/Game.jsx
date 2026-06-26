@@ -1,1 +1,161 @@
-export default function Game() { return <div>Game</div> }
+import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { sendAnswer, useHelp, quitGame } from '../api'
+import QuestionCard from '../components/QuestionCard'
+import PrizeLadder from '../components/PrizeLadder'
+import HelpButtons from '../components/HelpButtons'
+import styles from './Game.module.css'
+
+export default function Game() {
+  const { state } = useLocation()
+  const navigate = useNavigate()
+
+  const [sessionId] = useState(state?.sessionId)
+  const [playerName] = useState(state?.playerName)
+  const [prizeLadder] = useState(state?.prizeLadder ?? [])
+  const [safetyNetLevels] = useState(state?.safetyNetLevels ?? [])
+
+  const [question, setQuestion] = useState(state?.question)
+  const [level, setLevel] = useState(state?.level ?? 0)
+  const [helpsUsed, setHelpsUsed] = useState([])
+  const [activeEliminates, setActiveEliminates] = useState(null)
+  const [selected, setSelected] = useState(null)
+  const [feedback, setFeedback] = useState(null)
+  const [confirming, setConfirming] = useState(false)
+  const [disabled, setDisabled] = useState(false)
+  const [tableModal, setTableModal] = useState(null)
+  const [currentPrize, setCurrentPrize] = useState(0)
+
+  if (!sessionId || !question) {
+    navigate('/')
+    return null
+  }
+
+  async function handleConfirm() {
+    if (!selected || confirming) return
+    setConfirming(true)
+    setDisabled(true)
+    try {
+      const data = await sendAnswer(sessionId, selected)
+      setFeedback(data.correct ? 'correct' : 'wrong')
+
+      setTimeout(() => {
+        if (data.game_over) {
+          navigate('/gameover', {
+            state: {
+              playerName,
+              finalPrize: data.current_prize,
+              levelsReached: data.level,
+              won: data.won,
+            },
+          })
+        } else {
+          setQuestion(data.next_question)
+          setLevel(data.level)
+          setCurrentPrize(data.current_prize)
+          setSelected(null)
+          setFeedback(null)
+          setActiveEliminates(null)
+          setConfirming(false)
+          setDisabled(false)
+        }
+      }, 1500)
+    } catch {
+      setConfirming(false)
+      setDisabled(false)
+    }
+  }
+
+  async function handleHelp(type) {
+    try {
+      const data = await useHelp(sessionId, type)
+      setHelpsUsed(prev => [...prev, type])
+      if (type === 'table') {
+        setTableModal(data.table_content)
+      }
+      if (type === 'eliminate') {
+        setActiveEliminates(data.remaining_options)
+        if (selected && !data.remaining_options.some(o => o.startsWith(selected))) {
+          setSelected(null)
+        }
+      }
+      if (type === 'skip' && data.new_question) {
+        setQuestion(data.new_question)
+        setSelected(null)
+        setActiveEliminates(null)
+      }
+    } catch {}
+  }
+
+  async function handleQuit() {
+    if (!confirm('Deseja desistir e receber o prêmio acumulado?')) return
+    try {
+      const data = await quitGame(sessionId)
+      navigate('/gameover', {
+        state: {
+          playerName,
+          finalPrize: data.final_prize,
+          levelsReached: data.levels_reached,
+          won: false,
+        },
+      })
+    } catch {}
+  }
+
+  return (
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <span className={styles.player}>🎮 {playerName}</span>
+        {currentPrize > 0 && (
+          <span className={styles.prize}>R$ {currentPrize.toLocaleString('pt-BR')}</span>
+        )}
+        <button className={styles.quit} onClick={handleQuit}>Desistir</button>
+      </header>
+
+      <div className={styles.main}>
+        <aside className={styles.sidebar}>
+          <PrizeLadder
+            prizeLadder={prizeLadder}
+            currentLevel={level}
+            safetyNetLevels={safetyNetLevels}
+          />
+        </aside>
+
+        <section className={styles.content}>
+          <QuestionCard
+            question={question}
+            selected={selected}
+            onSelect={setSelected}
+            feedback={feedback}
+            activeEliminates={activeEliminates}
+            disabled={disabled}
+          />
+          <div className={styles.bottom}>
+            <HelpButtons
+              helpsUsed={helpsUsed}
+              onHelp={handleHelp}
+              disabled={!!feedback}
+            />
+            <button
+              className={styles.confirm}
+              onClick={handleConfirm}
+              disabled={!selected || confirming || !!feedback}
+            >
+              {confirming ? 'Confirmando...' : 'Confirmar'}
+            </button>
+          </div>
+        </section>
+      </div>
+
+      {tableModal && (
+        <div className={styles.overlay} onClick={() => setTableModal(null)}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <h3>Tabela-Verdade</h3>
+            <pre className={styles.table}>{tableModal}</pre>
+            <button onClick={() => setTableModal(null)}>Fechar</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
