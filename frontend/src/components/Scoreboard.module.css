@@ -1,0 +1,5 @@
+.table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.table th, .table td { padding: 0.5rem 1rem; text-align: left; border-bottom: 1px solid #1a1a4e; }
+.table th { color: #ffd700; font-weight: 600; }
+.table tr:hover td { background: #1a1a4e; }
+.empty { color: #888; font-style: italic; }

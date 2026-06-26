@@ -1,0 +1,64 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #0d0d3b 0%, #0a0a1e 100%);
+}
+.card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 1rem;
+  padding: 3rem 2.5rem;
+  width: min(480px, 90vw);
+  text-align: center;
+}
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.5);
+  margin-bottom: 0.25rem;
+}
+.subtitle {
+  color: #aac; font-size: 1rem; margin-bottom: 2rem;
+}
+.form { display: flex; flex-direction: column; gap: 0.75rem; }
+.input {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #2a2a6e;
+  background: #0d0d3b;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus { border-color: #ffd700; }
+.btnStart {
+  padding: 0.875rem;
+  background: #ffd700;
+  color: #0a0a1e;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btnStart:hover:not(:disabled) { opacity: 0.85; }
+.btnStart:disabled { opacity: 0.5; cursor: default; }
+.btnScores {
+  padding: 0.625rem;
+  background: transparent;
+  color: #aac;
+  border: 1px solid #2a2a6e;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+.btnScores:hover { border-color: #ffd700; color: #ffd700; }
+.error { color: #ff6b6b; font-size: 0.875rem; }
+.scores { margin-top: 1.5rem; text-align: left; }
+.scoresTitle { color: #ffd700; font-size: 1.1rem; margin-bottom: 0.75rem; }
