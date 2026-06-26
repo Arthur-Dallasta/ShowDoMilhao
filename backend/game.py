@@ -32,11 +32,15 @@ class GameState:
     active_eliminates: Optional[list] = None
 
 
+sessions: dict[str, "GameState"] = {}
+
+
 def create_game_state(player_name: str) -> GameState:
     session_id = str(uuid.uuid4())
     state = GameState(session_id=session_id, player_name=player_name)
     q = pick_question("easy", set())
-    assert q is not None, "No easy questions available"
+    if q is None:
+        raise RuntimeError("No questions available for difficulty: easy")
     state.current_question = q
     state.used_questions.add(q["id"])
     return state
