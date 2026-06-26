@@ -686,3 +686,7 @@ def pick_question(difficulty: str, exclude_ids: set[str]) -> dict | None:
     if not pool:
         return None
     return random.choice(pool)
+
+
+def get_questions_by_difficulty(difficulty: str) -> list[dict]:
+    return [q for q in QUESTIONS if q["difficulty"] == difficulty]

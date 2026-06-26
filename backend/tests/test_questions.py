@@ -1,4 +1,4 @@
-from questions import QUESTIONS, pick_question
+from questions import QUESTIONS, pick_question, get_questions_by_difficulty
 
 def test_questions_have_required_keys():
     required = {"id", "topic", "subtopic", "difficulty", "question", "options", "correct", "explanation", "help_table"}
@@ -38,3 +38,24 @@ def test_pick_question_avoids_excluded():
     medium_count = sum(1 for q in QUESTIONS if q["difficulty"] == "medium")
     if medium_count > 1:
         assert second is not None
+
+def test_questions_have_valid_topic():
+    for q in QUESTIONS:
+        assert q["topic"] in {"proposicoes", "argumentos"}, f"Invalid topic in {q['id']}: {q['topic']}"
+
+def test_questions_options_format():
+    prefixes = ["A) ", "B) ", "C) ", "D) "]
+    for q in QUESTIONS:
+        for i, opt in enumerate(q["options"]):
+            assert opt.startswith(prefixes[i]), f"Option {i} in {q['id']} doesn't start with '{prefixes[i]}': {opt!r}"
+
+def test_get_questions_by_difficulty():
+    easy = get_questions_by_difficulty("easy")
+    medium = get_questions_by_difficulty("medium")
+    hard = get_questions_by_difficulty("hard")
+    assert len(easy) >= 18
+    assert len(medium) >= 18
+    assert len(hard) >= 18
+    assert all(q["difficulty"] == "easy" for q in easy)
+    assert all(q["difficulty"] == "medium" for q in medium)
+    assert all(q["difficulty"] == "hard" for q in hard)
