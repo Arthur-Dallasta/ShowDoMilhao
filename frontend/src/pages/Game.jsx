@@ -17,7 +17,7 @@ export default function Game() {
 
   const [question, setQuestion] = useState(state?.question)
   const [level, setLevel] = useState(state?.level ?? 0)
-  const [helpsUsed, setHelpsUsed] = useState([])
+  const [helpsUsed, setHelpsUsed] = useState(new Set())
   const [activeEliminates, setActiveEliminates] = useState(null)
   const [selected, setSelected] = useState(null)
   const [feedback, setFeedback] = useState(null)
@@ -69,7 +69,7 @@ export default function Game() {
   async function handleHelp(type) {
     try {
       const data = await useHelp(sessionId, type)
-      setHelpsUsed(prev => [...prev, type])
+      setHelpsUsed(prev => new Set([...prev, type]))
       if (type === 'table') {
         setTableModal(data.table_content)
       }
