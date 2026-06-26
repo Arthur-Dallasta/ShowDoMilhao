@@ -9,7 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/game" element={<Game />} />
-        <Route path="/game-over" element={<GameOver />} />
+        <Route path="/gameover" element={<GameOver />} />
       </Routes>
     </BrowserRouter>
   )
