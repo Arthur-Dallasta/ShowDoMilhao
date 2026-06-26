@@ -1,0 +1,15 @@
+.container { display: flex; flex-direction: column; gap: 0.5rem; }
+.label { font-size: 0.8rem; color: #666; margin: 0; }
+.buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.btn, .used {
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.4rem;
+  border: 1px solid #2a2a6e;
+  background: #0d0d3b;
+  color: #e8e8ff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.btn:hover:not(:disabled) { border-color: #ffd700; }
+.used { opacity: 0.35; cursor: not-allowed; }

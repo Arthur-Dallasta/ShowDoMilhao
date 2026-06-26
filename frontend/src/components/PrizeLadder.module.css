@@ -1,0 +1,25 @@
+.ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 200px;
+  flex-shrink: 0;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.35rem;
+  font-size: 0.8rem;
+  color: #aac;
+  background: transparent;
+  transition: all 0.2s;
+}
+.level { font-weight: 600; color: #555; min-width: 1.5rem; }
+.prize { font-weight: 500; }
+.current { background: #2a2a00; border: 1px solid #ffd700; color: #ffd700; }
+.current .level { color: #ffd700; }
+.safe { color: #00e676; }
+.safe .level { color: #00e676; }
+.passed { opacity: 0.45; }
