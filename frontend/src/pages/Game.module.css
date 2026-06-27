@@ -141,3 +141,10 @@
 .modal button:hover {
   background: #ffe033;
 }
+
+.explanation {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}

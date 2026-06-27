@@ -25,6 +25,7 @@ export default function Game() {
   const [disabled, setDisabled] = useState(false)
   const [tableModal, setTableModal] = useState(null)
   const [currentPrize, setCurrentPrize] = useState(0)
+  const [correctReveal, setCorrectReveal] = useState(null)
 
   if (!sessionId || !question) {
     navigate('/')
@@ -38,8 +39,13 @@ export default function Game() {
     try {
       const data = await sendAnswer(sessionId, selected)
       setFeedback(data.correct ? 'correct' : 'wrong')
+      if (!data.correct) {
+        const correctOption = question.options.find(o => o.startsWith(data.correct_answer))
+        setCorrectReveal({ letter: data.correct_answer, option: correctOption, explanation: data.explanation })
+      }
 
       setTimeout(() => {
+        setCorrectReveal(null)
         if (data.game_over) {
           navigate('/gameover', {
             state: {
@@ -146,6 +152,16 @@ export default function Game() {
           </div>
         </section>
       </div>
+
+      {correctReveal && (
+        <div className={styles.overlay}>
+          <div className={styles.modal}>
+            <h3>❌ Resposta errada</h3>
+            <p><strong>Resposta correta:</strong> {correctReveal.option}</p>
+            <p className={styles.explanation}>{correctReveal.explanation}</p>
+          </div>
+        </div>
+      )}
 
       {tableModal && (
         <div className={styles.overlay} onClick={() => setTableModal(null)}>

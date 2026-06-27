@@ -37,7 +37,7 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.card}>
         <h1 className={styles.title}>Show do Milhão</h1>
-        <p className={styles.subtitle}>Lógica Matemática</p>
+        <p className={styles.subtitle}>Lógica Computacional</p>
 
         <div className={styles.form}>
           <input
