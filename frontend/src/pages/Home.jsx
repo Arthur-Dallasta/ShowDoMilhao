@@ -40,20 +40,25 @@ export default function Home() {
         <p className={styles.subtitle}>Lógica Computacional</p>
 
         <div className={styles.form}>
-          <input
-            className={styles.input}
-            placeholder="Seu nome"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleStart()}
-            maxLength={30}
-          />
+          <div className={styles.inputWrap}>
+            <label className={styles.label} htmlFor="player-name">Nome do Jogador</label>
+            <input
+              id="player-name"
+              className={styles.input}
+              placeholder="Seu nome"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleStart()}
+              maxLength={30}
+              autoComplete="off"
+            />
+          </div>
           {error && <p className={styles.error}>{error}</p>}
           <button className={styles.btnStart} onClick={handleStart} disabled={loading || !name.trim()}>
-            {loading ? 'Carregando...' : '▶ Jogar'}
+            {loading ? 'Carregando...' : 'Jogar'}
           </button>
           <button className={styles.btnScores} onClick={() => setShowScores(v => !v)}>
-            {showScores ? 'Ocultar Ranking' : '🏆 Ver Ranking'}
+            {showScores ? 'Ocultar Ranking' : 'Ver Ranking'}
           </button>
         </div>
 

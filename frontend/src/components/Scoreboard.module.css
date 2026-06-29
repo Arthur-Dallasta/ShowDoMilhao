@@ -1,5 +1,26 @@
-.table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-.table th, .table td { padding: 0.5rem 1rem; text-align: left; border-bottom: 1px solid #1a1a4e; }
-.table th { color: #ffd700; font-weight: 600; }
-.table tr:hover td { background: #1a1a4e; }
-.empty { color: #888; font-style: italic; }
+.table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+
+.table th {
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  color: var(--text-dim);
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.025);
+  color: var(--text);
+}
+
+.table tbody tr:hover td { background: rgba(109,40,217,0.06); }
+
+.table tbody tr:nth-child(1) td:first-child { color: var(--gold); font-weight: 700; }
+.table tbody tr:nth-child(2) td:first-child { color: #c0c0c0; font-weight: 600; }
+.table tbody tr:nth-child(3) td:first-child { color: #cd7f32; font-weight: 600; }
+
+.empty { color: var(--text-dim); font-style: italic; font-size: 0.83rem; }

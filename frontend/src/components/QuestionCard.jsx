@@ -32,7 +32,8 @@ export default function QuestionCard({
               onClick={() => !feedback && !isEliminated && !disabled && onSelect(letter)}
               disabled={!!feedback || isEliminated || disabled}
             >
-              {opt}
+              <span className={styles.badge}>{letter}</span>
+              <span className={styles.optText}>{opt.replace(/^[A-D][).]\s*/, '')}</span>
             </button>
           )
         })}

@@ -1,25 +1,44 @@
 .ladder {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  width: 200px;
+  gap: 0.1rem;
+  width: 185px;
   flex-shrink: 0;
 }
+
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.35rem 0.75rem;
   border-radius: 0.35rem;
-  font-size: 0.8rem;
-  color: #aac;
+  font-size: 0.75rem;
+  color: var(--text-dim);
   background: transparent;
-  transition: all 0.2s;
+  border: 1px solid transparent;
+  transition: all 0.25s;
+  font-variant-numeric: tabular-nums;
 }
-.level { font-weight: 600; color: #555; min-width: 1.5rem; }
+
+.level { font-weight: 600; min-width: 1.25rem; font-size: 0.68rem; opacity: 0.7; }
 .prize { font-weight: 500; }
-.current { background: #2a2a00; border: 1px solid #ffd700; color: #ffd700; }
-.current .level { color: #ffd700; }
-.safe { color: #00e676; }
-.safe .level { color: #00e676; }
-.passed { opacity: 0.45; }
+
+.current {
+  background: rgba(245,197,24,0.08);
+  border-color: var(--gold);
+  color: var(--gold);
+  animation: ladderPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes ladderPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(245,197,24,0.18); }
+  50%       { box-shadow: 0 0 22px rgba(245,197,24,0.38); }
+}
+
+.current .level { color: var(--gold); font-weight: 800; opacity: 1; }
+.current .prize { font-weight: 700; }
+
+.safe { color: var(--green); }
+.safe .level { color: var(--green); font-weight: 700; opacity: 1; }
+
+.passed { opacity: 0.2; }

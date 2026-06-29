@@ -26,6 +26,7 @@ export default function Game() {
   const [tableModal, setTableModal] = useState(null)
   const [currentPrize, setCurrentPrize] = useState(0)
   const [correctReveal, setCorrectReveal] = useState(null)
+  const [quitModal, setQuitModal] = useState(false)
 
   if (!sessionId || !question) {
     navigate('/')
@@ -93,8 +94,8 @@ export default function Game() {
     } catch {}
   }
 
-  async function handleQuit() {
-    if (!confirm('Deseja desistir e receber o prêmio acumulado?')) return
+  async function handleQuitConfirm() {
+    setQuitModal(false)
     try {
       const data = await quitGame(sessionId)
       navigate('/gameover', {
@@ -111,11 +112,11 @@ export default function Game() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <span className={styles.player}>🎮 {playerName}</span>
+        <span className={styles.player}>{playerName}</span>
         {currentPrize > 0 && (
           <span className={styles.prize}>R$ {currentPrize.toLocaleString('pt-BR')}</span>
         )}
-        <button className={styles.quit} onClick={handleQuit}>Desistir</button>
+        <button className={styles.quit} onClick={() => setQuitModal(true)}>Desistir</button>
       </header>
 
       <div className={styles.main}>
@@ -169,6 +170,26 @@ export default function Game() {
             <h3>Tabela-Verdade</h3>
             <pre className={styles.table}>{tableModal}</pre>
             <button onClick={() => setTableModal(null)}>Fechar</button>
+          </div>
+        </div>
+      )}
+
+      {quitModal && (
+        <div className={styles.overlay} onClick={() => setQuitModal(false)}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <h3>Desistir da partida?</h3>
+            <p>Você receberá o prêmio acumulado até agora.</p>
+            {currentPrize > 0 && (
+              <p className={styles.quitPrize}>R$ {currentPrize.toLocaleString('pt-BR')}</p>
+            )}
+            <div className={styles.modalActions}>
+              <button className={styles.cancelBtn} onClick={() => setQuitModal(false)}>
+                Continuar jogando
+              </button>
+              <button className={styles.quitConfirm} onClick={handleQuitConfirm}>
+                Desistir
+              </button>
+            </div>
           </div>
         </div>
       )}

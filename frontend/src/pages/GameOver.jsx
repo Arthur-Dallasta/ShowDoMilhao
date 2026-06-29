@@ -19,13 +19,13 @@ export default function GameOver() {
         <div className={styles.result}>
           {won ? (
             <>
-              <p className={styles.emoji}>🏆</p>
+              <p className={styles.icon}>🏆</p>
               <h1 className={styles.title}>Parabéns, {playerName}!</h1>
               <p className={styles.subtitle}>Você ganhou o prêmio máximo!</p>
             </>
           ) : (
             <>
-              <p className={styles.emoji}>{prize > 0 ? '🎯' : '😢'}</p>
+              <p className={styles.icon}>{prize > 0 ? '🎯' : '😢'}</p>
               <h1 className={styles.title}>{prize > 0 ? `Você ganhou` : 'Que pena!'}</h1>
               <p className={styles.subtitle}>
                 {prize > 0 ? `Parabéns, ${playerName}!` : `Melhor sorte da próxima, ${playerName}.`}
@@ -41,11 +41,11 @@ export default function GameOver() {
         </div>
 
         <button className={styles.btn} onClick={() => navigate('/')}>
-          🔄 Jogar Novamente
+          Jogar Novamente
         </button>
 
         <div className={styles.scores}>
-          <h2 className={styles.scoresTitle}>🏆 Top 10</h2>
+          <h2 className={styles.scoresTitle}>Top 10</h2>
           <Scoreboard />
         </div>
       </div>
