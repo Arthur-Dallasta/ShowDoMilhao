@@ -26,6 +26,7 @@ export default function Game() {
   const [tableModal, setTableModal] = useState(null)
   const [currentPrize, setCurrentPrize] = useState(0)
   const [correctReveal, setCorrectReveal] = useState(null)
+  const [pendingGameOver, setPendingGameOver] = useState(null)
   const [quitModal, setQuitModal] = useState(false)
 
   useEffect(() => {
@@ -46,30 +47,25 @@ export default function Game() {
       if (!data.correct) {
         const correctOption = question.options.find(o => o.startsWith(data.correct_answer))
         setCorrectReveal({ letter: data.correct_answer, option: correctOption, explanation: data.explanation })
+        setPendingGameOver({ playerName, finalPrize: data.current_prize, levelsReached: data.level, won: false })
+      } else {
+        setTimeout(() => {
+          if (data.game_over) {
+            navigate('/gameover', {
+              state: { playerName, finalPrize: data.current_prize, levelsReached: data.level, won: data.won },
+            })
+          } else {
+            setQuestion(data.next_question)
+            setLevel(data.level)
+            setCurrentPrize(data.current_prize)
+            setSelected(null)
+            setFeedback(null)
+            setActiveEliminates(null)
+            setConfirming(false)
+            setDisabled(false)
+          }
+        }, 1500)
       }
-
-      setTimeout(() => {
-        setCorrectReveal(null)
-        if (data.game_over) {
-          navigate('/gameover', {
-            state: {
-              playerName,
-              finalPrize: data.current_prize,
-              levelsReached: data.level,
-              won: data.won,
-            },
-          })
-        } else {
-          setQuestion(data.next_question)
-          setLevel(data.level)
-          setCurrentPrize(data.current_prize)
-          setSelected(null)
-          setFeedback(null)
-          setActiveEliminates(null)
-          setConfirming(false)
-          setDisabled(false)
-        }
-      }, 1500)
     } catch {
       setConfirming(false)
       setDisabled(false)
@@ -163,6 +159,12 @@ export default function Game() {
             <h3>❌ Resposta errada</h3>
             <p><strong>Resposta correta:</strong> {correctReveal.option}</p>
             <p className={styles.explanation}>{correctReveal.explanation}</p>
+            <div className={styles.modalActions}>
+              <button className={styles.quitConfirm} onClick={() => {
+                setCorrectReveal(null)
+                if (pendingGameOver) navigate('/gameover', { state: pendingGameOver })
+              }}>Continuar</button>
+            </div>
           </div>
         </div>
       )}
