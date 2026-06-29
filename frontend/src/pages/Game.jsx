@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { sendAnswer, useHelp, quitGame } from '../api'
 import QuestionCard from '../components/QuestionCard'
@@ -28,10 +28,13 @@ export default function Game() {
   const [correctReveal, setCorrectReveal] = useState(null)
   const [quitModal, setQuitModal] = useState(false)
 
-  if (!sessionId || !question) {
-    navigate('/')
-    return null
-  }
+  useEffect(() => {
+    if (!sessionId || !question) {
+      navigate('/')
+    }
+  }, [])
+
+  if (!sessionId || !question) return null
 
   async function handleConfirm() {
     if (!selected || confirming) return
