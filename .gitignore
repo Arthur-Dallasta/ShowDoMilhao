@@ -6,6 +6,7 @@ __pycache__/
 node_modules/
 dist/
 .env
+.env.local
 highscores.db
 test_highscores.db
 docs/
