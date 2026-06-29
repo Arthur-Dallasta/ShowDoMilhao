@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, desc
 from sqlalchemy.orm import DeclarativeBase, Session
 
-DB_PATH = os.getenv("DB_PATH", "highscores.db")
+DB_PATH = os.getenv("DB_PATH", "/tmp/highscores.db")
 
 _db_engine = None
 
