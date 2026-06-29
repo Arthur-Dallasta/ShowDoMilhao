@@ -28,6 +28,7 @@ export default function Game() {
   const [correctReveal, setCorrectReveal] = useState(null)
   const [pendingGameOver, setPendingGameOver] = useState(null)
   const [quitModal, setQuitModal] = useState(false)
+  const [apiError, setApiError] = useState('')
 
   useEffect(() => {
     if (!sessionId || !question) {
@@ -66,9 +67,14 @@ export default function Game() {
           }
         }, 1500)
       }
-    } catch {
+    } catch (err) {
       setConfirming(false)
       setDisabled(false)
+      if (err.message?.includes('404')) {
+        setApiError('Sessão expirada. O servidor reiniciou durante o jogo.')
+      } else {
+        setApiError('Erro de conexão. Tente novamente.')
+      }
     }
   }
 
@@ -175,6 +181,20 @@ export default function Game() {
             <h3>Tabela-Verdade</h3>
             <pre className={styles.table}>{tableModal}</pre>
             <button onClick={() => setTableModal(null)}>Fechar</button>
+          </div>
+        </div>
+      )}
+
+      {apiError && (
+        <div className={styles.overlay}>
+          <div className={styles.modal}>
+            <h3>Erro</h3>
+            <p>{apiError}</p>
+            <div className={styles.modalActions}>
+              <button className={styles.quitConfirm} onClick={() => navigate('/')}>
+                Voltar ao início
+              </button>
+            </div>
           </div>
         </div>
       )}
