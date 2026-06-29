@@ -2,8 +2,11 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "rewrites": [
-    { "source": "/game/:path*", "destination": "/api/index.py" },
-    { "source": "/scores",      "destination": "/api/index.py" },
-    { "source": "/:path*",      "destination": "/index.html" }
+    { "source": "/game/start",        "destination": "/api/index.py" },
+    { "source": "/game/answer",       "destination": "/api/index.py" },
+    { "source": "/game/help/:type",   "destination": "/api/index.py" },
+    { "source": "/game/quit",         "destination": "/api/index.py" },
+    { "source": "/scores",            "destination": "/api/index.py" },
+    { "source": "/:path*",            "destination": "/index.html" }
   ]
 }
