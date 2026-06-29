@@ -8,3 +8,4 @@ dist/
 .env
 highscores.db
 test_highscores.db
+docs/
